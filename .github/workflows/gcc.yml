@@ -1,0 +1,26 @@
+name: CCBBR For GCC
+run-name: building for GCC
+on: 
+  schedule:
+    - cron: '0 17 * * *'
+jobs:
+  Build-gcc:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses:  actions/checkout@v3
+        with:
+          path: myrepo
+        
+      - name: Check built version
+        run: echo "my_latest=$(git branch -r | grep 'origin/gcc-' | sed 's|.*gcc-||' | sort -V | tail -1)" >> $GITHUB_ENV
+        working-directory: ${{ github.workspace }}/myrepo
+        
+      - name: Clone GCC
+        run: |
+          git clone https://gcc.gnu.org/git/gcc.git && cd gcc && echo "gcc_latest=$(git branch -r | grep 'origin/releases/gcc-' | sed 's|.*gcc-||' | sort -V | tail -1)" >> $GITHUB_ENV
+
+      - name: Build
+        if: ${{ env.gcc_latest != env.my_latest }}
+        run: ./config %% make
+        working-directory: ${{ github.workspace }}/gcc/
