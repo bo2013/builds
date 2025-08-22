@@ -14,7 +14,6 @@ jobs:
         
       - name: Check built version
         run: echo "gcc_latest=$(git ls-remote --refs https://github.com/bo2013/builds.git 'refs/heads/releases/gcc-*' | awk -F'/' '{print $NF}' | sort -V | tail -1)" >> $GITHUB_ENV
-        working-directory: ${{ github.workspace }}/myrepo
         
       - name: Check GCC version
         run: |
