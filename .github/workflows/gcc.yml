@@ -61,12 +61,11 @@ jobs:
 
       - name: Push to github
         if: ${{ env.gcc_latest != env.my_latest }}
-        working-directory: ${{ github.workspace }}/myrepo
+        working-directory: myrepo
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          cd myrepo
           git checkout -B ${{ env.gcc_latest }}
           cp -r ../finish/* .
           git add .
