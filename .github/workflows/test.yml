@@ -12,3 +12,6 @@ jobs:
         run: echo "my_latest=$(git branch -r | grep 'origin/gcc-' | sed 's|.*gcc-||' | sort -V | tail -1)" >> $GITHUB_ENV
       - name: test2
         run: echo "my ${{ env.my_latest }}"
+      - name: test
+        if: success()
+        run: echo "ok lol"
