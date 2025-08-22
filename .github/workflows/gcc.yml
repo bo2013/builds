@@ -3,6 +3,7 @@ run-name: building for GCC
 on: 
   schedule:
     - cron: '0 17 * * *'
+  workflow_dispatch:
 jobs:
   Build-gcc:
     runs-on: ubuntu-latest
