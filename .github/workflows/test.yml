@@ -4,5 +4,11 @@ on:
 
 jobs:
   test:
-    - name: clone me
-      
+    runs-on: ubuntu-latest
+    steps:
+      - name: clone me
+        uses: actions/checkout@v3
+      - name: real test
+        run: echo "my_latest=$(git branch -r | grep 'origin/gcc-' | sed 's|.*gcc-||' | sort -V | tail -1)" >> $GITHUB_ENV
+      - name: test2
+        run: echo "my ${{ env.my_latest }}"
