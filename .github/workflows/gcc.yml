@@ -67,7 +67,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           git checkout -B ${{ env.gcc_latest }}
-          cp -r ../finish/* .
+          cp -r ${{ github.workspace }}/finish/* .
           git add .
           git commit -m "Build GCC ${{ env.gcc_latest }}"
           git push origin ${{ env.gcc_latest }}
