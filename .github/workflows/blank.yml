@@ -28,7 +28,8 @@ jobs:
 
       - name: Continue if new version
         if: ${{ env.latest != env.current }}
-        run: echo "New GCC version found: ${{ env.latest }}"
+        run: |
+          echo 'New GCC version found: ${{ env.latest }}'
 
       # Step 2: Tạo branch mới
       - name: Create new branch
