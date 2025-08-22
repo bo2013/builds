@@ -58,7 +58,7 @@ jobs:
               cd ../../../
             done
           done
-          pwd
+          pwd && ls
       - name: Push to github
         if: ${{ env.gcc_latest != env.my_latest }}
         working-directory: myrepo
