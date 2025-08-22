@@ -33,7 +33,7 @@ jobs:
       - name: Build GCC
         if: ${{ env.gcc_latest != env.my_latest }}
         run: |
-          git clone --depth 1 --branch releases/${{ env.gcc_latest }} --recurse-submodules=no https://gcc.gnu.org/git/gcc.git
+          #git clone --depth 1 --branch releases/${{ env.gcc_latest }} --recurse-submodules=no https://gcc.gnu.org/git/gcc.git
           mkdir -p build finish
 
           TARGETS=("x86_64-pc-linux-gnu" "i386-pc-linux-gnu")
@@ -58,7 +58,7 @@ jobs:
               cd ../../../
             done
           done
-
+          pwd
       - name: Push to github
         if: ${{ env.gcc_latest != env.my_latest }}
         working-directory: myrepo
