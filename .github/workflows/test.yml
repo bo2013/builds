@@ -6,12 +6,18 @@ jobs:
   test:
     runs-on: self-hosted
     steps:
-      - name: clone me
-        uses: actions/checkout@v3
-      - name: real test
-        run: echo "my_latest=$(git branch -r | grep 'origin/gcc-' | sed 's|.*gcc-||' | sort -V | tail -1)" >> $GITHUB_ENV
-      - name: test2
-        run: echo "my ${{ env.my_latest }}"
-      - name: test
-        if: success()
-        run: echo "ok lol"
+      - name: Check GCC version
+        id: gcc_ver
+        run: |
+          ver=$(git ls-remote --refs https://gcc.gnu.org/git/gcc.git 'refs/heads/releases/gcc-*' | awk -F'/' '{print $NF}' | sort -V | tail -1)
+          echo "::set-output name=ver::$ver"
+
+      - name: Check my version
+        id: my_ver
+        run: |
+          ver=$(git ls-remote --refs https://github.com/bo2013/builds.git 'refs/heads/releases/gcc-*' | awk -F'/' '{print $NF}' | sort -V | tail -1)
+          echo "::set-output name=ver::$ver"
+
+      - name: Build GCC
+        if: ${{ steps.gcc_ver.outputs.ver != steps.my_ver.outputs.ver }}
+        run: echo "ok" # build commands
