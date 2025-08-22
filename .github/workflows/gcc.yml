@@ -59,7 +59,7 @@ jobs:
               cd ../../../
             done
           done
-          pwd && ls
+          echo "hello" > finish/test.txt
       - name: Push to github
         if: ${{ env.gcc_latest != env.my_latest }}
         working-directory: myrepo
