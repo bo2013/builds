@@ -11,6 +11,12 @@ jobs:
     steps:
       - name: install build tools
         run: sudo apt update && sudo apt install build-essential libgmp-dev libmpfr-dev libmpc-dev libisl-dev
+
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          path: myrepo
         
       - name: Check built version
         run: echo "gcc_latest=$(git ls-remote --refs https://github.com/bo2013/builds.git 'refs/heads/releases/gcc-*' | awk -F'/' '{print $NF}' | sort -V | tail -1)" >> $GITHUB_ENV
@@ -24,6 +30,41 @@ jobs:
           echo "my: ${{ env.my_latest }}"
           echo "GCC: ${{ env.gcc_latest }}"
 
-      - name: Clone GCC
+      - name: Build GCC
         if: ${{ env.gcc_latest != env.my_latest }}
-        run: git clone --depth 1 --branch releases/${{ env.gcc_latest }} --recurse-submodules=no https://gcc.gnu.org/git/gcc.git
+        run: |
+          git clone --depth 1 --branch releases/${{ env.gcc_latest }} --recurse-submodules=no https://gcc.gnu.org/git/gcc.git
+          mkdir -p build finish
+
+          TARGETS=("x86_64-pc-linux-gnu" "i386-pc-linux-gnu")
+
+          for h in "${TARGETS[@]}"; do
+            for t in "${TARGETS[@]}"; do
+              echo "=== Building target=$t host=$h ==="
+              mkdir -p build/$h/$t
+              cd build/$h/$t
+              
+              ../../../gcc/configure \
+              --prefix=$PWD/../../../finish/$h/$t \
+              --disable-multilib \
+              --enable-languages=c,c++ \
+              --host=$h \
+              --target=$t
+              
+              make -j"$(nproc)"
+              make install
+              
+              cd ../../../
+            done
+          done
+
+      - name: Push to github
+        if: ${{ env.gcc_latest != env.my_latest }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          cd myrepo
+          git checkout -b ${{ env.gcc_latest }}
+          mv ../finish/* .
+          git push origin ${{ env.gcc_latest }}
