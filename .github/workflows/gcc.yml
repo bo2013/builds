@@ -2,7 +2,8 @@ name: CCBBR For GCC
 run-name: building for GCC
 on: 
   schedule:
-    - cron: '0 17 * * *'
+    - cron: '0 12 * * *'
+    - cron: '0 0 * * *'
   workflow_dispatch:
 jobs:
   Build-gcc:
@@ -14,7 +15,7 @@ jobs:
           path: myrepo
         
       - name: Check built version
-        run: echo "gcc_latest=$(git ls-remote --refs https://https://github.com/bo2013/builds.git 'refs/heads/releases/gcc-*' | awk -F'/' '{print $NF}' | sort -V | tail -1)" >> $GITHUB_ENV
+        run: echo "gcc_latest=$(git ls-remote --refs https://github.com/bo2013/builds.git 'refs/heads/releases/gcc-*' | awk -F'/' '{print $NF}' | sort -V | tail -1)" >> $GITHUB_ENV
         working-directory: ${{ github.workspace }}/myrepo
         
       - name: Check GCC version
