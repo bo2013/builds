@@ -19,7 +19,7 @@ jobs:
           path: myrepo
         
       - name: Check built version
-        run: echo "gcc_latest=$(git ls-remote --refs https://github.com/bo2013/builds.git 'refs/heads/releases/gcc-*' | awk -F'/' '{print $NF}' | sort -V | tail -1)" >> $GITHUB_ENV
+        run: echo "my_latest=$(git ls-remote --refs https://github.com/bo2013/builds.git 'refs/heads/releases/gcc-*' | awk -F'/' '{print $NF}' | sort -V | tail -1)" >> $GITHUB_ENV
         
       - name: Check GCC version
         run: |
@@ -65,6 +65,8 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           cd myrepo
-          git checkout -b ${{ env.gcc_latest }}
-          mv ../finish/* .
+          git checkout -B ${{ env.gcc_latest }}
+          cp -r ../finish/* .
+          git add .
+          git commit -m "Build GCC ${{ env.gcc_latest }}"
           git push origin ${{ env.gcc_latest }}
