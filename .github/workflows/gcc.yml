@@ -26,5 +26,5 @@ jobs:
           
       - name: Build
         if: ${{ env.gcc_latest != env.my_latest }}
-        run: ./config %% make
+        run: ./configure && make -j$(nproc) && make install
         working-directory: ${{ github.workspace }}/gcc/
