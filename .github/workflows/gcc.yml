@@ -43,16 +43,17 @@ jobs:
               echo "=== Building target=$t host=$h ==="
               mkdir -p build/$h/$t
               cd build/$h/$t
+
+              #disable for test
+              #../../../gcc/configure \
+              #--prefix=$PWD/../../../finish/$h/$t \
+              #--disable-multilib \
+              #--enable-languages=c,c++ \
+              #--host=$h \
+              #--target=$t
               
-              ../../../gcc/configure \
-              --prefix=$PWD/../../../finish/$h/$t \
-              --disable-multilib \
-              --enable-languages=c,c++ \
-              --host=$h \
-              --target=$t
-              
-              make -j"$(nproc)"
-              make install
+              #make -j"$(nproc)"
+              #make install
               
               cd ../../../
             done
