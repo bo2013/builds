@@ -14,7 +14,7 @@ jobs:
           path: myrepo
         
       - name: Check built version
-        run: echo "my_latest=$(git branch -r | grep 'origin/releases/gcc-' | sed 's|.*gcc-||' | sort -V | tail -1)" >> $GITHUB_ENV
+        run: echo "my_latest=$(git branch -r | grep 'origin/gcc-' | sed 's|.*gcc-||' | sort -V | tail -1)" >> $GITHUB_ENV
         working-directory: ${{ github.workspace }}/myrepo
         
       - name: Clone GCC
