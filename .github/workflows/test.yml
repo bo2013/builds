@@ -4,7 +4,7 @@ on:
 
 jobs:
   test:
-    runs-on: self-hosted
+    runs-on: ubuntu-lastest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -20,5 +20,4 @@ jobs:
           touch hello.txt
           git add hello.txt
           git commit -m "Test commit"
-          git status && git branch && git remote -v
-          GIT_CURL_VERBOSE=1 git push origin test-branch
+          git push -u origin test-branch
