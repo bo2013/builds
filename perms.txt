@@ -1,0 +1,4 @@
+Perm to make a GH PAT
+- Contents
+- Metadata
+- Pull requests
