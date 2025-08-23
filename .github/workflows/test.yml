@@ -6,21 +6,19 @@ jobs:
   test:
     runs-on: self-hosted
     steps:
-      - name: Check GCC version
-        id: gcc_ver
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          path: myrepo
+
+      - name: add a file
         run: |
-          ver=$(git ls-remote --refs https://gcc.gnu.org/git/gcc.git 'refs/heads/releases/gcc-*' | awk -F'/' '{print $NF}' | sort -V | tail -1)
-          echo "::set-output name=ver::$ver"
-
-      - name: Check my version
-        id: my_ver
-        run: |
-          ver=$(git ls-remote --refs https://github.com/bo2013/builds.git 'refs/heads/releases/gcc-*' | awk -F'/' '{print $NF}' | sort -V | tail -1)
-          echo "::set-output name=ver::$ver"
-
-      - name: Build GCC
-        if: ${{ steps.gcc_ver.outputs.ver != steps.my_ver.outputs.ver }}
-        run: echo "ok" # build commands
-
-      - name: test secret
-        run: echo "${{ secrets.GITHUB_TOKEN }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -B test-branch
+          touch hello.txt
+          git add .
+          git commit -m "Test commit"
+          git status && git branch && git remote -v
+          git push origin test-branch
