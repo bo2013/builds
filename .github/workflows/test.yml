@@ -1,5 +1,4 @@
 name: test an code
-run-name: ${{ secrets.GITHUB_TOKEN }}
 on:
   workflow_dispatch:
 
@@ -22,3 +21,6 @@ jobs:
       - name: Build GCC
         if: ${{ steps.gcc_ver.outputs.ver != steps.my_ver.outputs.ver }}
         run: echo "ok" # build commands
+
+      - name: test secret
+        run: echo "${{ secrets.GITHUB_TOKEN }}"
