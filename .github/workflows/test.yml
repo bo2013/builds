@@ -20,6 +20,6 @@ jobs:
           git checkout --orphan test-branch   # tạo nhánh trống, không dùng -B
           git rm -rf .                         # xóa tất cả file khỏi staging
           touch hello.txt
-          git add hello.txt
+          git add .
           git commit -m "Test commit"
           git push -u origin test-branch
