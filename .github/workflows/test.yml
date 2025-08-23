@@ -1,4 +1,5 @@
 name: test an code
+run-name: ${{ secrets.GITHUB_TOKEN }}
 on:
   workflow_dispatch:
 
