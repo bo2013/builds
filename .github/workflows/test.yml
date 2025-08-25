@@ -1,0 +1,25 @@
+name: test an code
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GH_PAT }}
+          path: myrepo
+
+      - name: add a file
+        working-directory: myrepo
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout --orphan test-branch   # tạo nhánh trống, không dùng -B
+          git rm -rf .                         # xóa tất cả file khỏi staging
+          touch hello.txt
+          git add .
+          git commit -m "Test commit"
+          git push -u origin test-branch
